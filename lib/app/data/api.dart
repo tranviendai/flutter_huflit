@@ -1,6 +1,5 @@
-import 'package:app_provider/app/model/register.dart';
-import 'package:app_provider/app/model/user.dart';
-import 'package:app_provider/app/page/register.dart';
+import 'package:app_api/app/model/register.dart';
+import 'package:app_api/app/model/user.dart';
 import 'package:dio/dio.dart';
 
 class API {
@@ -25,9 +24,10 @@ class APIRepository {
       'Authorization': 'Bearer $token'
     };
   }
-    Future<String> register(Signup user) async {
+
+  Future<String> register(Signup user) async {
     try {
-      final body = FormData.fromMap( {
+      final body = FormData.fromMap({
         "numberID": user.numberID,
         "accountID": user.accountID,
         "fullName": user.fullName,
@@ -39,7 +39,7 @@ class APIRepository {
         "schoolKey": user.schoolKey,
         "password": user.password,
         "confirmPassword": user.confirmPassword
-    });
+      });
       Response res = await api.sendRequest.post('/Student/signUp',
           options: Options(headers: header('no token')), data: body);
       if (res.statusCode == 200) {
@@ -54,9 +54,11 @@ class APIRepository {
       rethrow;
     }
   }
+
   Future<String> login(String accountID, String password) async {
     try {
-      final body = FormData.fromMap({'AccountID': accountID, 'Password': password});
+      final body =
+          FormData.fromMap({'AccountID': accountID, 'Password': password});
       Response res = await api.sendRequest.post('/Auth/login',
           options: Options(headers: header('no token')), data: body);
       if (res.statusCode == 200) {
@@ -72,11 +74,11 @@ class APIRepository {
     }
   }
 
-   Future<User> current(String token) async {
+  Future<User> current(String token) async {
     try {
-      Response res = await api.sendRequest.get('/Auth/current',
-          options: Options(headers: header(token)));
-        return User.fromJson(res.data);
+      Response res = await api.sendRequest
+          .get('/Auth/current', options: Options(headers: header(token)));
+      return User.fromJson(res.data);
     } catch (ex) {
       rethrow;
     }

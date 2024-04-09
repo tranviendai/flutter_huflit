@@ -1,10 +1,35 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import '../model/user.dart';
+import '../data/sharepre.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Detail extends StatelessWidget {
-  const Detail({super.key, required this.user});
-  final User user;
+class Detail extends StatefulWidget {
+  const Detail({super.key});
+
+  @override
+  State<Detail> createState() => _DetailState();
+}
+
+class _DetailState extends State<Detail> {
   // khi dùng tham số truyền vào phải khai báo biến trùng tên require
+  User user = User.userEmpty();
+  getDataUser() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String strUser = pref.getString('user')!;
+
+    user = User.fromJson(jsonDecode(strUser));
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDataUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     // create style
@@ -17,7 +42,11 @@ class Detail extends StatelessWidget {
       body: SingleChildScrollView(
         child: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Image(image: NetworkImage(user.imageUrl!), height: 250),
+            Image(
+              image: NetworkImage(user.imageURL!),
+              height: 200,
+              width: 200,
+            ),
             Text("NumberID: ${user.idNumber}", style: mystyle),
             Text("Fullname: ${user.fullName}", style: mystyle),
             Text("Phone Number: ${user.phoneNumber}", style: mystyle),

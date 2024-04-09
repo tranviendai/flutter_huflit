@@ -1,6 +1,5 @@
-import 'package:app_provider/app/model/user.dart';
 import 'package:flutter/material.dart';
-import 'mainpage.dart';
+import 'package:app_api/app/page/auth/login.dart';
 
 void main() {
   runApp(const MainApp());
@@ -11,11 +10,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Mainpage(user: User.user())
-        // initialRoute: "/",
-        // onGenerateRoute: AppRoute.onGenerateRoute,  -> su dung auto route (pushName)
+      home: LoginScreen(),
+      // initialRoute: "/",
+      // onGenerateRoute: AppRoute.onGenerateRoute,  -> su dung auto route (pushName)
     );
   }
 }

@@ -1,24 +1,42 @@
-import 'package:app_provider/app/model/category.dart';
-import 'package:app_provider/app/model/user.dart';
+import 'dart:convert';
+import 'package:app_api/app/model/category.dart';
+import 'package:app_api/app/model/user.dart';
+import 'package:app_api/app/page/detail.dart';
+import 'package:app_api/app/route/page1.dart';
+import 'package:app_api/app/route/page2.dart';
+import 'package:app_api/app/route/page3.dart';
 import 'package:flutter/material.dart';
 import 'app/page/defaultwidget.dart';
-import 'app/page/register.dart';
+import 'app/data/sharepre.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Mainpage extends StatefulWidget {
-  final User user;
-  const Mainpage({super.key, required this.user});
+  const Mainpage({super.key});
 
   @override
   State<Mainpage> createState() => _MainpageState();
 }
 
 class _MainpageState extends State<Mainpage> {
+  User user = User.userEmpty();
   int _selectedIndex = 0;
+
+  getDataUser() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String strUser = pref.getString('user')!;
+
+    user = User.fromJson(jsonDecode(strUser));
+    setState(() {});
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getDataUser();
+    print(user.imageURL);
   }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -39,7 +57,7 @@ class _MainpageState extends State<Mainpage> {
         break;
       case 3:
         {
-          return  Register(user: widget.user);
+          return const Detail();
         }
       default:
         nameWidgets = "None";
@@ -52,30 +70,32 @@ class _MainpageState extends State<Mainpage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("HUFLIT Mobile"),
+        title: const Text("HL Mobile"),
       ),
       drawer: Drawer(
         child: ListView(
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: [
-           DrawerHeader(
+            DrawerHeader(
               decoration: const BoxDecoration(
                 color: Colors.blue,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children:  [
-                 widget.user.imageUrl!.length < 5 ? SizedBox() : CircleAvatar(
-                    radius: 40,
-                    backgroundImage: NetworkImage(
-                        widget.user.imageUrl!,
-                  )),
+                children: [
+                  user.imageURL!.length < 5
+                      ? const SizedBox()
+                      : CircleAvatar(
+                          radius: 40,
+                          backgroundImage: NetworkImage(
+                            user.imageURL!,
+                          )),
                   const SizedBox(
                     height: 8,
                   ),
-                  Text("${widget.user.fullName!}"),
-                  Text("${widget.user.accountId!}"),
+                  Text(user.fullName!),
+                  Text(user.idNumber!),
                 ],
               ),
             ),
@@ -93,12 +113,12 @@ class _MainpageState extends State<Mainpage> {
               title: const Text('History'),
               onTap: () {
                 Navigator.pop(context);
-                _selectedIndex = 0;
+                _selectedIndex = 1;
                 setState(() {});
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.supervised_user_circle),
+              ListTile(
+              leading: const Icon(Icons.contact_mail),
               title: const Text('Cart'),
               onTap: () {
                 Navigator.pop(context);
@@ -106,18 +126,45 @@ class _MainpageState extends State<Mainpage> {
                 setState(() {});
               },
             ),
-            const Divider(
-              color: Colors.black,
-            ),
-           widget.user.accountId == '' ? SizedBox() : ListTile(
-              leading: const Icon(Icons.exit_to_app),
-              title: const Text('Logout'),
+            ListTile(
+              leading: const Icon(Icons.pages),
+              title: const Text('Page1'),
               onTap: () {
                 Navigator.pop(context);
                 _selectedIndex = 0;
-                setState(() {});
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Page1()));
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.pages),
+              title: const Text('Page2'),
+              onTap: () {
+                Navigator.pop(context);
+                _selectedIndex = 0;
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Page2()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.pages),
+              title: const Text('Page3'),
+              onTap: () {
+                Navigator.pop(context);
+                _selectedIndex = 0;
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Page3()));
+              },
+            ),
+            const Divider(
+              color: Colors.black,
+            ),
+            user.accountId == ''
+                ? const SizedBox()
+                : ListTile(
+                    leading: const Icon(Icons.exit_to_app),
+                    title: const Text('Logout'),
+                    onTap: () {
+                      logOut(context);
+                    },
+                  ),
           ],
         ),
       ),

@@ -3,7 +3,7 @@ class User {
   String? accountId;
   String? fullName;
   String? phoneNumber;
-  String? imageUrl;
+  String? imageURL;
   String? birthDay;
   String? gender;
   String? schoolYear;
@@ -16,7 +16,7 @@ class User {
     required this.accountId,
     required this.fullName,
     required this.phoneNumber,
-    required this.imageUrl,
+    required this.imageURL,
     required this.birthDay,
     required this.gender,
     required this.schoolYear,
@@ -24,13 +24,13 @@ class User {
     required this.dateCreated,
     required this.status,
   });
-  static User user() {
+  static User userEmpty() {
     return User(
         idNumber: '',
         accountId: '',
         fullName: '',
         phoneNumber: '',
-        imageUrl: '',
+        imageURL: '',
         birthDay: '',
         gender: '',
         schoolYear: '',
@@ -44,7 +44,7 @@ class User {
         accountId: json["accountID"],
         fullName: json["fullName"],
         phoneNumber: json["phoneNumber"],
-        imageUrl: json["imageURL"] == null || json["imageURL"] == ''
+        imageURL: json["imageURL"] == null || json["imageURL"] == ''
             ? ""
             : json['imageURL'],
         birthDay: json["birthDay"],
@@ -54,4 +54,20 @@ class User {
         dateCreated: json["dateCreated"],
         status: json["status"],
       );
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['idNumber'] = idNumber;
+    data['accountId'] = accountId;
+    data['gender'] = gender;
+    data['fullName'] = fullName;
+    data['gender'] = gender;
+    data['phoneNumber'] = phoneNumber;
+    data['imageURL'] = imageURL;
+    data['birthDay'] = birthDay;
+    data['schoolYear'] = schoolYear;
+    data['schoolKey'] = schoolKey;
+
+    return data;
+  }
 }
