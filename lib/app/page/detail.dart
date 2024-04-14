@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import '../model/user.dart';
-import '../data/sharepre.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Detail extends StatefulWidget {

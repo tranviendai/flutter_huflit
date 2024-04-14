@@ -1,19 +1,21 @@
-import 'package:app_api/app/page/auth/login.dart';
-import 'package:flutter/material.dart';
 
-class AppRoute {
-  static Route onGenerateRoute(RouteSettings route) {
-    switch (route.name) {
-      // case "/":
-      //     return MaterialPageRoute(builder: (_) => const SplashScreen()); //-> tao 1 screen
-      case "Login":
-        return MaterialPageRoute(builder: (_) => const LoginScreen());
-      default:
-        return MaterialPageRoute(builder: (_) => const LoginScreen());
-    }
-  }
+class CategoryModel {
+    int id;
+    String name;
+    String imageUrl;
+    String desc;
 
-  static void pushScreen(BuildContext context, Widget route) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => route));
-  }
+    CategoryModel({
+        required this.id,
+        required this.name,
+        required this.imageUrl,
+        required this.desc,
+    });
+
+    factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
+        id: json["id"] ?? 0,
+        name: json["name"] ?? "",
+        imageUrl: json["imageURL"] ?? "",
+        desc: json["description"] ?? "",
+    );
 }

@@ -1,9 +1,11 @@
 import 'dart:convert';
-import 'package:app_api/app/model/category.dart';
 import 'package:app_api/app/model/user.dart';
+import 'package:app_api/app/page/cart/cart_screen.dart';
+import 'package:app_api/app/page/category/category_list.dart';
 import 'package:app_api/app/page/detail.dart';
-import 'package:app_api/app/route/page1.dart';
-import 'package:app_api/app/route/page2.dart';
+import 'package:app_api/app/page/history/history_screen.dart';
+import 'package:app_api/app/page/home/home_screen.dart';
+import 'package:app_api/app/page/product/product_list.dart';
 import 'package:app_api/app/route/page3.dart';
 import 'package:flutter/material.dart';
 import 'app/page/defaultwidget.dart';
@@ -26,15 +28,13 @@ class _MainpageState extends State<Mainpage> {
     String strUser = pref.getString('user')!;
 
     user = User.fromJson(jsonDecode(strUser));
-    setState(() {});
+    setState(() { });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getDataUser();
-    print(user.imageURL);
   }
 
   void _onItemTapped(int index) {
@@ -47,14 +47,17 @@ class _MainpageState extends State<Mainpage> {
     var nameWidgets = "Home";
     switch (index) {
       case 0:
-        nameWidgets = "Home";
-        break;
+       {
+        return HomeBuilder();
+       }
       case 1:
-        nameWidgets = "Contact";
-        break;
+        {
+          return HistoryScreen();
+        }
       case 2:
-        nameWidgets = "Info";
-        break;
+        {
+          return CartScreen();
+        }
       case 3:
         {
           return const Detail();
@@ -79,7 +82,7 @@ class _MainpageState extends State<Mainpage> {
           children: [
             DrawerHeader(
               decoration: const BoxDecoration(
-                color: Colors.blue,
+                color: Color.fromARGB(255, 243, 152, 33),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -95,7 +98,6 @@ class _MainpageState extends State<Mainpage> {
                     height: 8,
                   ),
                   Text(user.fullName!),
-                  Text(user.idNumber!),
                 ],
               ),
             ),
@@ -117,7 +119,7 @@ class _MainpageState extends State<Mainpage> {
                 setState(() {});
               },
             ),
-              ListTile(
+            ListTile(
               leading: const Icon(Icons.contact_mail),
               title: const Text('Cart'),
               onTap: () {
@@ -128,20 +130,22 @@ class _MainpageState extends State<Mainpage> {
             ),
             ListTile(
               leading: const Icon(Icons.pages),
-              title: const Text('Page1'),
+              title: const Text('Category'),
               onTap: () {
                 Navigator.pop(context);
                 _selectedIndex = 0;
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Page1()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const CategoryList()));
               },
             ),
             ListTile(
               leading: const Icon(Icons.pages),
-              title: const Text('Page2'),
+              title: const Text('Product'),
               onTap: () {
                 Navigator.pop(context);
                 _selectedIndex = 0;
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Page2()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const ProductList()));
               },
             ),
             ListTile(
@@ -150,7 +154,8 @@ class _MainpageState extends State<Mainpage> {
               onTap: () {
                 Navigator.pop(context);
                 _selectedIndex = 0;
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Page3()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Page3()));
               },
             ),
             const Divider(
